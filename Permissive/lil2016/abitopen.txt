@@ -1,0 +1,42 @@
+Almost Open Source
+==================
+
+   This is a shared message across most of my projects released under an Open
+ Source license (mostly zlib  but in a few cases i have used other licenses,
+ check for a LICENSE file, license.txt file or a comment block in the source
+ code).  Unless otherwise noted in a project itself, this covers all the
+ source code that you can download at my server at runtimeterror.com (note
+ that this does not cover the webpage source itself, only downloadable source
+ code in the form of an archive or direct repository access).
+
+   While technically the projects are open source, they are not collaborative
+ projects.  I do not mind people modifying them or forking them (i wouldn't
+ release them under a license that permits this if that was the case) and i do
+ hope that people will find them useful and report bugs about them, but at the
+ same time i do not plan on accepting patches for these projects.  I prefer to
+ keep things under my control and full ownership when it comes to copyrights.
+ I would accept a copyright assignment, like the author of sqlite and fossil
+ does, but it is too much of a hassle and considering the amount of code i have
+ received over the years for my stuff, i do not think it is worth the effort.
+
+   Of course if there is a small patch or issue that needs to be fixed, as long
+ as there is an understanding that i will need to reimplement any patch you
+ send (which implies, among others, that you should explain what the patch's
+ code does and that the longer the code is, the less likely i will implement it)
+ feel free to send it to me.  However i do not promise that i will actually
+ implement it or that i will do it in the same way or provide the exact same
+ functionality as your patch.  If i decide to use it, it will be as a source of
+ inspiration and a point of reference for the feature or bugfix you need
+ implemented.
+
+   I understand that all this sound unncessary and too much of an effort, but
+ i want to keep things simple in my projects.  My motivation for releasing the
+ source code is to make using my projects easier, either as a whole or in bits,
+ but this does not include collaborative effort.  If you prefer a more
+ traditional open source collaborative project, feel free to fork one of mine
+ that combines and accepts other people's contributions.
+
+ Kostas "Bad Sector" Michalopoulos
+ badsectoracula@gmail.com
+ badsector@runtimeterror.com
+

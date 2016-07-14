@@ -1,0 +1,9 @@
+*.DS_STORE
+*.o
+*.log
+*.gcov
+*.gcda
+*.gcno
+stmr
+test
+coverage

@@ -1,0 +1,322 @@
+<style type="text/css">
+#diagram {
+    background:#303030;
+    width:115px;
+    height:5120px;
+    padding:5px
+}
+</style>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bonsai/0.4/bonsai.min.js">
+</script>
+
+<div id="diagram">
+</div>
+
+<script>
+
+function main()
+{
+    var colors = [
+        '#f33',
+        '#0d0',
+        '#dd0',
+        '#2af'
+    ]
+    var tab = [];
+    var edgetab = [];
+    for (var i = 0; i < 256; i++) {
+        new Text('' + i).addTo(stage).attr({
+            x: 24,
+            y: 4 + i * 20,
+            fontFamily: 'Arial, sans-serif',
+            fontSize: '15',
+            textFillColor: '#aaa',
+            textStrokeWidth: 0 });
+        var a = i & 0x3;
+        var b = (i >> 2) & 0x3;
+        var c = (i >> 4) & 0x3;
+        var d = (i >> 6) & 0x3;
+        new Text('' + d + c + b + a).addTo(stage).attr({
+            x: 55,
+            y: 4 + i * 20,
+            fontFamily: 'Arial, sans-serif',
+            fontSize: '15',
+            textFillColor: '#e77',
+            textStrokeWidth: 0 });
+
+        var x = 0;
+        new Rect(x + 1, 1 + i * 20, 18, 18)
+            .addTo(stage)
+            .attr('fillColor', '#555');
+        var nw = new Circle(x + 4,  i * 20 + 4,  2).addTo(stage);
+        var ne = new Circle(x + 16, i * 20 + 4,  2).addTo(stage);
+        var sw = new Circle(x + 4,  i * 20 + 16, 2).addTo(stage);
+        var se = new Circle(x + 16, i * 20 + 16, 2).addTo(stage);
+        sw.fill(colors[a]);
+        se.fill(colors[b]);
+        ne.fill(colors[c]);
+        nw.fill(colors[d]);
+
+        var x = 95;
+        new Rect(x + 1, 1 + i * 20, 18, 18)
+            .addTo(stage)
+            .attr('fillColor', '#555');
+        var nw = new Circle(x + 4,  i * 20 + 4,  2).addTo(stage);
+        var ne = new Circle(x + 16, i * 20 + 4,  2).addTo(stage);
+        var sw = new Circle(x + 4,  i * 20 + 16, 2).addTo(stage);
+        var se = new Circle(x + 16, i * 20 + 16, 2).addTo(stage);
+        sw.fill(colors[a]);
+        se.fill(colors[b]);
+        ne.fill(colors[c]);
+        nw.fill(colors[d]);
+
+        var pts = [
+            [x + 4,  i * 20 + 16], // sw 0
+            [x + 10, i * 20 + 16], // s  1
+            [x + 16, i * 20 + 16], // se 2
+            [x + 16, i * 20 + 10], // e  3
+            [x + 16, i * 20 + 4],  // ne 4
+            [x + 10, i * 20 + 4],  // n  5
+            [x + 4,  i * 20 + 4],  // nw 6
+            [x + 4,  i * 20 + 10], // w  7
+            [x + 10, i * 20 + 10], // center
+        ];
+
+        entry = [[], [], [], []];
+        tab.push(entry)
+
+        var draw_polygon = function(color_index, corner_index, indices) {
+            var ppts = indices.map(function(i) { return pts[i]; });
+            var tri0 = new Path().moveTo(ppts[0][0], ppts[0][1]);
+            for (var j = 1; j < ppts.length; j++) {
+                if (j > 1) {
+                    entry[corner_index].push(indices[0]);
+                    entry[corner_index].push(indices[j - 1]);
+                    entry[corner_index].push(indices[j]);
+                }
+                tri0.lineTo(ppts[j][0], ppts[j][1]);
+            }
+            tri0.closePath();
+            tri0.addTo(stage);
+            tri0.stroke('#000');
+            tri0.attr({
+                strokeWidth: 0.5,
+                join: 'round'
+            });
+            tri0.fill(colors[color_index]);
+        };
+
+        edge = [[], [], [], []];
+        edgetab.push(edge)
+
+        var draw_edge = function(color_index, corner_index, indices) {
+            var ppts = indices.map(function(i) { return pts[i]; });
+            var x0 = ppts[0][0], y0 = ppts[0][1];
+            var x1 = ppts[1][0], y1 = ppts[1][1];
+            var dx = x1 - x0, dy = y1 - y0;
+            var isqrt = 2 / Math.sqrt(dx * dx + dy * dy);
+            x0 -= (x1 - x0) * isqrt;
+            y0 -= (y1 - y0) * isqrt;
+            var lin0 = new Path().moveTo(x0, y0);
+            for (var j = 1; j < ppts.length; j++) {
+                edge[corner_index].push(indices[j - 1]);
+                edge[corner_index].push(indices[j]);
+                lin0.lineTo(ppts[j][0], ppts[j][1]);
+            }
+            lin0.addTo(stage);
+            lin0.stroke(colors[color_index]);
+            lin0.attr({
+                strokeWidth: 1.5,
+                opacity: 0.75,
+                join: 'round'
+            });
+        };
+
+        if (a == b && b == c && c == d) {
+            draw_polygon(a, 0, [0, 2, 4, 6]);
+            continue;
+        }
+
+        if ((a != b && b != c && c != d && a != c && a != d && b != d) ||
+            (a == c && b == d)) {
+            draw_polygon(a, 0, [0, 1, 8, 7]);
+            draw_polygon(b, 1, [1, 2, 3, 8]);
+            draw_polygon(c, 2, [8, 3, 4, 5]);
+            draw_polygon(d, 3, [7, 8, 5, 6]);
+            draw_edge(a, 0, [1, 8, 7]);
+            draw_edge(b, 1, [3, 8, 1]);
+            draw_edge(c, 2, [5, 8, 3]);
+            draw_edge(d, 3, [7, 8, 5]);
+            continue;
+        }
+
+        if (a == b && b == c) {
+            draw_polygon(a, 0, [7, 0, 2, 4, 5]);
+            draw_polygon(d, 3, [7, 5, 6]);
+            draw_edge(d, 3, [7, 5]);
+            draw_edge(a, 0, [5, 7]);
+            continue;
+        }
+        if (b == c && c == d) {
+            draw_polygon(b, 1, [1, 2, 4, 6, 7]);
+            draw_polygon(a, 0, [7, 0, 1]);
+            draw_edge(a, 0, [1, 7]);
+            draw_edge(b, 1, [7, 1]);
+            continue;
+        }
+        if (c == d && d == a) {
+            draw_polygon(a, 0, [3, 4, 6, 0, 1]);
+            draw_polygon(b, 1, [1, 2, 3]);
+            draw_edge(b, 1, [3, 1]);
+            draw_edge(a, 0, [1, 3]);
+            continue;
+        }
+        if (b == d && d == a) {
+            draw_polygon(a, 0, [5, 6, 0, 2, 3]);
+            draw_polygon(c, 2, [3, 4, 5]);
+            draw_edge(c, 2, [5, 3]);
+            draw_edge(a, 0, [3, 5]);
+            continue;
+        }
+
+        if (a == b && c == d) {
+            draw_polygon(a, 0, [0, 2, 3, 7]);
+            draw_edge(a, 0, [3, 7]);
+            // draw_polygon(a, 0, [0, 1, 8, 7]);
+            // draw_polygon(a, 0, [1, 2, 3, 8]);
+            draw_polygon(c, 2, [7, 3, 4, 6]);
+            draw_edge(c, 2, [7, 3]);
+            // draw_polygon(c, 2, [7, 8, 5, 6]);
+            // draw_polygon(c, 2, [8, 3, 4, 5]);
+            continue;
+        }
+        if (b == c && a == d) {
+            draw_polygon(b, 1, [1, 2, 4, 5]);
+            draw_edge(b, 1, [5, 1]);
+            // draw_polygon(b, 1, [1, 2, 3, 8])
+            // draw_polygon(b, 1, [8, 3, 4, 5])
+            draw_polygon(a, 0, [0, 1, 5, 6]);
+            draw_edge(a, 0, [1, 5]);
+            // draw_polygon(a, 0, [0, 1, 8, 7]);
+            // draw_polygon(a, 0, [7, 8, 5, 6]);
+            continue;
+        }
+
+        if (a == b) {
+            // draw_polygon(a, 0, [0, 2, 3, 7]);
+            draw_polygon(a, 0, [0, 1, 8, 7]);
+            draw_polygon(a, 0, [1, 2, 3, 8]);
+            draw_edge(a, 0, [3, 8, 7]);
+            draw_polygon(c, 2, [8, 3, 4, 5]);
+            draw_edge(c, 2, [5, 8, 3]);
+            draw_polygon(d, 3, [7, 8, 5, 6]);
+            draw_edge(d, 3, [7, 8, 5]);
+            continue;
+        }
+        if (c == b) {
+            // draw_polygon(b, 1, [1, 2, 4, 5]);
+            draw_polygon(b, 1, [1, 2, 3, 8])
+            draw_polygon(b, 1, [8, 3, 4, 5])
+            draw_edge(b, 1, [5, 8, 1]);
+            draw_polygon(a, 0, [0, 1, 8, 7]);
+            draw_edge(a, 0, [1, 8, 7]);
+            draw_polygon(d, 3, [7, 8, 5, 6]);
+            draw_edge(d, 3, [7, 8, 5]);
+            continue;
+        }
+        if (c == d) {
+            // draw_polygon(c, 2, [7, 3, 4, 6]);
+            draw_polygon(c, 2, [7, 8, 5, 6]);
+            draw_polygon(c, 2, [8, 3, 4, 5]);
+            draw_edge(c, 2, [7, 8, 3]);
+            draw_polygon(a, 0, [0, 1, 8, 7]);
+            draw_edge(a, 0, [1, 8, 7]);
+            draw_polygon(b, 1, [1, 2, 3, 8]);
+            draw_edge(b, 1, [3, 8, 1]);
+            continue;
+        }
+        if (d == a) {
+            // draw_polygon(a, 0, [0, 1, 5, 6]);
+            draw_polygon(a, 0, [0, 1, 8, 7]);
+            draw_polygon(a, 0, [7, 8, 5, 6]);
+            draw_edge(a, 0, [1, 8, 5]);
+            draw_polygon(b, 1, [1, 2, 3, 8]);
+            draw_edge(b, 1, [3, 8, 1]);
+            draw_polygon(c, 2, [8, 3, 4, 5]);
+            draw_edge(c, 2, [5, 8, 3]);
+            continue;
+        }
+
+        if (a == c && b != d) {
+            draw_polygon(a, 0, [0, 1, 3, 4, 5, 7]);
+            draw_edge(a, 0, [1, 3]);
+            draw_edge(a, 0, [5, 7]);
+            draw_polygon(b, 1, [1, 2, 3]);
+            draw_edge(b, 1, [3, 1]);
+            draw_polygon(d, 3, [7, 5, 6]);
+            draw_edge(d, 3, [7, 5]);
+            continue;
+        }
+        if (b == d && a != c) {
+            draw_polygon(b, 1, [6, 7, 1, 2, 3, 5]);
+            draw_edge(b, 1, [7, 1]);
+            draw_edge(b, 1, [3, 5]);
+            draw_polygon(a, 0, [7, 0, 1]);
+            draw_edge(a, 0, [1, 7]);
+            draw_polygon(c, 2, [3, 4, 5]);
+            draw_edge(c, 2, [5, 3]);
+            continue;
+        }
+    }
+
+    msg = 'char const* QUATERNARY_TABLE =\n'
+    for (var t = 0; t < tab.length; t++) {
+        if ((t & 3) > 0) {
+            continue;
+        }
+        msg += '    "';
+        for (var c = 0; c < 4; c++) {
+            msg += tab[t][c].length / 3;
+            for (var p = 0; p < tab[t][c].length; p++) {
+                msg += tab[t][c][p];
+            }
+        }
+        msg += '"\n'
+    }
+
+    msg += '\nchar const* QUATERNARY_EDGES =\n'
+    msg += '    "';
+    for (var t = 0; t < edgetab.length; t++) {
+        if ((t & 3) > 0) {
+            continue;
+        }
+        for (var c = 0; c < 4; c++) {
+            msg += edgetab[t][c].length / 2;
+            for (var p = 0; p < edgetab[t][c].length; p++) {
+                msg += edgetab[t][c][p];
+            }
+        }
+        if ((t % 16) == 0) {
+            msg += '"\n'
+            msg += '    "';
+        }
+    }
+    msg += '"\n'
+
+    console.log(msg)
+}
+
+var el = document.getElementById('diagram');
+
+bonsai.run(el, {
+    code: main,
+    width: 115,
+    height: 5120
+});
+
+// setTimeout(function() {
+//     window.console.log(el.children[0].innerHTML);
+// }, 5000);
+
+</script>

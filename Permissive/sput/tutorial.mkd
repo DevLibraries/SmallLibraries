@@ -1,0 +1,234 @@
+# Sput Unit Testing Tutorial
+
+## Overview
+
+[Sput] -- A Simple, Portable Unit Testing Framework for C/C++.
+
+Its main goals include simple use and portability. As a result
+Sput consists of a single header file and uses standard ANSI C only.
+
+Learning how to use Sput will likely take you *less than 10 minutes* -
+just add it to your project and focus on testing your software.
+
+## Features
+
+  * Easy to use (single header file, intuitive API)
+  * Portable (plain ANSI C)
+  * Intuitive reporting
+  * Fit the needs of test-driven software development
+
+## General Workflow
+
+Sput allows you to group your tests into different **suites**, each
+containing a set of **tests** that perform all **checks** necessary to prove
+that your software works as expected.
+
+                               +------------------+
+    Suite                      |  your_function() |              ...
+                               +------------------+
+                              /                    \
+                       +----------+        +------------------+
+    Tests/Test Cases   | Boundary |        | Invalid Argument |  ...
+                       +----------+        +------------------+
+                       /         /          \                /
+                 +-----+   +-----+           +-----+   +-----+
+    Checks       | Min |   | Max | ...       | 1st |   | 2nd |   ...
+                 +-----+   +-----+           +-----+   +-----+
+
+Sput will evaluate all **checks** and report success and failure for each
+suite. Additionally an overall evaluation of all suites is given. An
+appropriate exit value will be generated that denotes whether all assumptions
+on your software are true.
+
+
+## Using Sput
+
+Sput is implemented as a set of C preprocessor macros stored within a
+single header file.
+To use Sput, simply include its header file an start testing your code.
+
+
+## Sput Macros
+
+All macros share the prefix `sput_` to prevent collisions with other
+function or macro names.
+
+### `sput_start_testing()`
+
+This macro prepares all of Sput's data structures and has to be called
+before any other Sput macro.
+
+### `sput_set_output_stream(stream)`
+
+This macro expects a `FILE` pointer. Afterwards, any Sput output will be
+written to this *stream*. Passing `NULL` restores the default (stdout).
+
+### `sput_enter_suite(name)`
+
+This macro prepares Sput to enter a new **suite** "*name*".
+It has to be called before any **tests** are run or **checks** are performed.
+
+### `sput_run_test(function-name)`
+
+This macro expects the *unquoted* name of the function that provides your
+**test** case and its **checks**. It will run the test case immediately and
+assign it to the current **suite**.
+
+### `sput_fail_if(condition, description)`
+
+This macro expects a condition and a (quoted) description of the **check**.
+It may only be called within a **test** case. If the given condition evaluates
+to true, the check will fail.
+
+### `sput_fail_unless(condition, description)`
+
+This macro expects a condition and a (quoted) description of the **check**.
+It may only be called within a **test** case. If the given condition evaluates
+to false, the check will fail.
+
+### `sput_leave_suite()`
+
+This macro leaves the current **suite** and generates a report on the
+results. It is automatically called if either sput_enter_suite() or
+sput_finish_testing() are called while a suite is still marked as active.
+
+### `sput_finish_testing()`
+
+This macro generates an overall statistic of all run **checks** in all
+**suites**. Overall success means that all **checks** succeeded.
+
+After calling `sput_finish_testing()` no more tests should be run.
+
+### `sput_get_return_value()`
+
+This macro expands to an expression denoting overall success or failure
+(`EXIT_SUCCESS` or `EXIT_FAILURE`) -- it is intended to be returned from
+`main()`.
+
+
+## Workflow
+
+  1. In `main()`, call `sput_start_testing()`.
+  2. In `main()`, prepare and register your desired output stream using
+     `sput_set_output_stream()` (optional).
+  3. In `main()`, enter a suite by calling `sput_enter_suite()`.
+  4. Outside of `main()`, create a new test function that constitutes your
+     test/test case.
+     No arguments will be passed and its return value will be ignored by
+     Sput.
+     In the test function, embed your checks using `sput_fail_if()` and/or
+     `sput_fail_unless()`.
+  5. In `main()`, run the test using `sput_run_test()`.
+  6. Repeat 4. and 5. for all tests/test cases of the current suite.
+  7. Repeat 3.
+  8. In `main()`, call `sput_finish_testing()` to obtain the overall results
+     of all suites.
+  9. In `main()`, return `sput_get_return_value()` to indicate success or
+     failure of your tests (optional).
+
+
+## Note on Signal Handling
+
+In order to provide a maximum of OS portability, Sput does not attempt
+to "catch" and handle any signals that may be raised while testing.
+
+
+## A Complete Example
+
+The following example shows minimal testing of a buggy function that counts
+vowels of a given string:
+
+    #include <stdio.h>
+    #include <sput.h>
+
+    /*
+     * count_vowels() counts the vowels present in a given string.
+     *
+     * While the function basically works as expected, it recognizes
+     * [aeiou] as vowels only and erroneously does not take uppercase
+     * vowels into account.
+     */
+    static int count_vowels(const char *s)
+    {
+        const char *cp    = s;
+        int         count = 0;
+
+        while (*cp)
+        {
+            if (*cp == 'a' || *cp == 'e' || *cp == 'i' ||
+                *cp == 'o' || *cp == 'u')
+            {
+                count++;
+            }
+
+            cp++;
+        }
+
+        return count;
+    }
+
+    static void test_vowels_present()
+    {
+        sput_fail_unless(count_vowels("book")  == 2, "book == 2v");
+        sput_fail_unless(count_vowels("hand")  == 1, "hand == 1v");
+        sput_fail_unless(count_vowels("test")  == 1, "test == 1v");
+        sput_fail_unless(count_vowels("Peter") == 2, "Peter == 2v");
+        sput_fail_unless(count_vowels("Apu")   == 2, "Apu == 2v");
+    }
+
+    static void test_no_vowels_present()
+    {
+        sput_fail_unless(count_vowels("GCC") == 0, "GCC == 0v");
+        sput_fail_unless(count_vowels("BBC") == 0, "BBC == 0v");
+        sput_fail_unless(count_vowels("CNN") == 0, "CNN == 0v");
+        sput_fail_unless(count_vowels("GPS") == 0, "GPS == 0v");
+        sput_fail_unless(count_vowels("Ltd") == 0, "Ltd == 0v");
+    }
+
+    int main(int argc, char *argv[])
+    {
+        sput_start_testing();
+
+        sput_enter_suite("count_vowels(): Vowels Present");
+        sput_run_test(test_vowels_present);
+
+        sput_enter_suite("count_vowels(): No Vowels Present");
+        sput_run_test(test_no_vowels_present);
+
+        sput_finish_testing();
+
+        return sput_get_return_value();
+    }
+
+Here's the test report generated by Sput:
+
+    == Entering suite #1, "count_vowels(): Vowels Present" ==
+
+    [1:1]  test_vowels_present:#1  "book == 2v"  pass
+    [1:2]  test_vowels_present:#2  "hand == 1v"  pass
+    [1:3]  test_vowels_present:#3  "test == 1v"  pass
+    [1:4]  test_vowels_present:#4  "Peter == 2v"  pass
+    [1:5]  test_vowels_present:#5  "Apu == 2v"  FAIL
+    !    Type:      fail-unless
+    !    Condition: count_vowels("Apu") == 2
+    !    Line:      39
+
+    --> 5 check(s), 4 ok, 1 failed (20.00%)
+
+    == Entering suite #2, "count_vowels(): No Vowels Present" ==
+
+    [2:1]  test_no_vowels_present:#1  "GCC == 0v"  pass
+    [2:2]  test_no_vowels_present:#2  "BBC == 0v"  pass
+    [2:3]  test_no_vowels_present:#3  "CNN == 0v"  pass
+    [2:4]  test_no_vowels_present:#4  "GPS == 0v"  pass
+    [2:5]  test_no_vowels_present:#5  "Ltd == 0v"  pass
+
+    --> 5 check(s), 5 ok, 0 failed (0.00%)
+
+    ==> 10 check(s) in 2 suite(s) finished after 0.00 second(s),
+        9 succeeded, 1 failed (10.00%)
+
+    [FAILURE]
+
+
+[Sput]: http://www.use-strict.de/sput-unit-testing/

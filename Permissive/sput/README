@@ -1,0 +1,22 @@
+# Sput - Simple, Portable Unit Testing Framework for C/C++
+
+
+## Prerequisites and Dependencies
+
+None.
+
+
+## Installing Sput
+
+Just copy the shipped `sput.h` header file to you project folder.
+
+
+## Further Information
+
+  * Sput Tutorial
+
+    A tutorial is included in the distribution: tutorial.mkd.
+
+  * Sput Website
+
+    http://www.use-strict.de/sput-unit-testing/

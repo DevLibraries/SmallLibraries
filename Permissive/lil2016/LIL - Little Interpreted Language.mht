@@ -1,0 +1,57 @@
+From: <Saved by Mozilla 5.0 (Windows)>
+Subject: LIL - Little Interpreted Language
+Date: Thu, 14 Jul 2016 11:27:03 +0100
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://runtimeterror.com/tech/lil/
+X-MAF-Information: Produced By MAF V4.0.1
+
+<html><head>
+<meta http-equiv=3D"content-type" content=3D"text/html; charset=3Dwindows-1=
+252"><title>LIL - Little Interpreted Language</title></head><body>
+<h1>LIL</h1>
+<hr>
+<b>LIL</b> (<b>L</b>ittle <b>I</b>nterpreted <b>L</b>anguage) is a small hi=
+ghly dynamic scripting language inspired by Tcl and unix shells. The langua=
+ge has two implementations: one in C which consists of a pair of <tt>c</tt>=
+ and <tt>h</tt> files and one in Free Pascal which consists of a single <tt=
+>pas</tt> file (a unit). Also a Lazarus package for the latter is provided.=
+ The library is written by Kostas "Bad Sector" Michalopoulos and licensed=
+ under the <a href=3D"https://opensource.org/licenses/Zlib">zlib license</a=
+>. From this site you can download an archive containing the latest version=
+ of both the C and Free Pascal implementations, some examples and documenta=
+tion.
+<p>
+Download <tt><a href=3D"http://runtimeterror.com/tech/lil/lil20160603.zip">=
+lil20160603.zip</a></tt> (88KB).<br>
+Please also <a href=3D"http://runtimeterror.com/abitopen.txt">read this mes=
+sage about my opensource projects</a>.
+</p><hr>
+<blockquote><pre>LIL - Little Interpreted Language
+Copyright (C) 2010-2016 Kostas Michalopoulos
+
+This software is provided 'as-is', without any express or implied
+warranty.  In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not
+  claim that you wrote the original software. If you use this software
+  in a product, an acknowledgment in the product documentation would be
+  appreciated but is not required.
+2. Altered source versions must be plainly marked as such, and must not be
+  misrepresented as being the original software.
+3. This notice may not be removed or altered from any source distribution.
+
+Kostas Michalopoulos &lt;badsector@runtimeterror.com&gt;
+</pre></blockquote>
+<hr>
+<a href=3D"http://runtimeterror.com/">Back to runtimeterror.com</a>
+
+<div data-url=3D"http://runtimeterror.com/tech/lil/" style=3D"display:none;=
+" id=3D"link64_adl_tabid">99</div></body></html>

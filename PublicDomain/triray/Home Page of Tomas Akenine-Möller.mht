@@ -1,0 +1,78 @@
+From: <Saved by Mozilla 5.0 (Windows)>
+Subject: Home Page of Tomas =?utf-8?Q?Akenine-M=C3=B6ller?=
+Date: Thu, 14 Jul 2016 00:48:39 +0100
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moller/code/
+X-MAF-Information: Produced By MAF V4.0.1
+
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en"><html><head>
+<meta http-equiv=3D"content-type" content=3D"text/html; charset=3Dwindows-1=
+252">
+   <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindow=
+s-1252">
+   <meta name=3D"Author" content=3D"Tomas Akenine-M=F6ller">
+   <meta name=3D"GENERATOR" content=3D"Mozilla/4.5 [en] (WinNT; I) [Netscap=
+e]">
+   <title>Home Page of Tomas Akenine-M=F6ller</title>
+</head>
+<body link=3D"#001020" bgcolor=3D"#ffffff">
+
+<font face=3D"LUCIDA,ARIAL,HELVETICA">
+<font size=3D"+1">
+<b>Code by Tomas Akenine-M=F6ller</b><br> <br>
+<font size=3D"+0">
+
+Here is some public domain code that I have developed:
+<ul type=3D"SQUARE">
+ <li> <b>Ray-Triangle Intersection </b><br>
+ 	  The article is <a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_=
+Akenine-Moller/code/raytri_tam.pdf">here</a><a>.<br>
+      Developed with Ben Trumbore from Cornell University. The
+      source </a><a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_Ak=
+enine-Moller/raytri/" target=3D"_top">here together with some optimizations=
+</a>=20
+      and some
+      extra statistics for different CPUs.
+ </li><li> <b>Triangle-Triangle Overlap Test </b> [Updated 2001-06-20]<br>
+ 	  The article is <a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_=
+Akenine-Moller/code/tritri_tam.pdf">here</a><a>.<br>
+       I have optimized (in that I replaced the divisions
+       with some multiplications - from a suggestion by
+       </a><a href=3D"http://www.magic-software.com/" target=3D"_top">Dave=
+ Eberly</a>) that code since
+       then.
+       New (faster) code is <a href=3D"http://fileadmin.cs.lth.se/cs/Person=
+al/Tomas_Akenine-Moller/code/opttritri.txt" target=3D"_top">
+       here</a>. If you want the line of intersection as well, the get=20
+       <a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moll=
+er/code/tritri_isectline.txt" target=3D"_top">this code</a>.
+ </li><li> <b> Triangle-Box Overlap Test</b> [Updated 2004-08-25] <br>
+ 	  The article is <a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_=
+Akenine-Moller/code/tribox_tam.pdf">here</a><a>.<br>
+      </a><a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-M=
+oller/code/tribox.txt" target=3D"_top">Old code is here</a>.<br>
+      <a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Molle=
+r/code/tribox2.txt" target=3D"_top">New, faster code is here</a>. It's not=
+ noticably faster on a 1333 MHz PC,
+            but it's about 15%  faster on a SUN 333MHz.<br>
+      <a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Molle=
+r/code/tribox3.txt" target=3D"_top">Bug-fixed code</a> This is the code you=
+ should get. It correctly
+            reports intersections for triangles completely in a box plane.=
+ Bug fix by Nick Pelling: thanks!
+ </li><li> <b>Rotation from one vector to another</b><br>
+      <a href=3D"http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Molle=
+r/code/fromtorot.txt" target=3D"_top">Source code</a>.
+</li></ul>
+
+
+<a href=3D"http://cs.lth.se/tomas_akenine-moller" target=3D"_top">Back</a>
+
+
+
+</font></font></font><div data-url=3D"http://fileadmin.cs.lth.se/cs/Persona=
+l/Tomas_Akenine-Moller/code/" style=3D"display:none;" id=3D"link64_adl_tabi=
+d">17</div></body></html>

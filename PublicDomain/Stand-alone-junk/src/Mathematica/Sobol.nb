@@ -1,0 +1,394 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     15052,        386]
+NotebookOptionsPosition[     13885,        348]
+NotebookOutlinePosition[     14303,        364]
+CellTagsIndexPosition[     14260,        361]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Sobol sequence", "Title",
+ CellChangeTimes->{{3.6557901854428997`*^9, 3.6557902177918997`*^9}, {
+  3.6557917655469*^9, 3.6557917787939*^9}, {3.6645029473775606`*^9, 
+  3.664502953531885*^9}, {3.669962132122634*^9, 3.6699621339414034`*^9}}],
+
+Cell["\<\
+Sup material for: \
+http://github.com/Marc-B-Reynolds/Stand-alone-junk/blob/master/src/SFH/Sobol.h
+
+Viz for 2D standard and stratified sequences\
+\>", "Text",
+ CellChangeTimes->{{3.6699621443031483`*^9, 3.6699621535578737`*^9}, {
+  3.6699621890933084`*^9, 3.6699622236621523`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Utility junk and data tables", "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6557218328034*^9, 3.6557218620824003`*^9}, {
+   3.6557920398809*^9, 3.6557920486078997`*^9}, 3.666211984029086*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"sobolTable2D", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "2147483648", ",", "3221225472", ",", "2684354560", ",", "4026531840", 
+     ",", "2281701376", ",", "3422552064", ",", "2852126720", ",", 
+     "4278190080", ",", "2155872256", ",", "3233808384", ",", "2694840320", 
+     ",", "4042260480", ",", "2290614272", ",", "3435921408", ",", 
+     "2863267840", ",", "4294901760", ",", "2147516416", ",", "3221274624", 
+     ",", "2684395520", ",", "4026593280", ",", "2281736192", ",", 
+     "3422604288", ",", "2852170240", ",", "4278255360", ",", "2155905152", 
+     ",", "3233857728", ",", "2694881440", ",", "4042322160", ",", 
+     "2290649224", ",", "3435973836", ",", "2863311530", ",", "4294967295"}], 
+    "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"sobolTable3D", "=", 
+    RowBox[{"{", 
+     RowBox[{
+     "2147483648", ",", "3221225472", ",", "1610612736", ",", "2415919104", 
+      ",", "3892314112", ",", "1543503872", ",", "2382364672", ",", 
+      "3305111552", ",", "1753219072", ",", "2629828608", ",", "3999268864", 
+      ",", "1435500544", ",", "2154299392", ",", "3231449088", ",", 
+      "1626210304", ",", "2421489664", ",", "3900735488", ",", "1556135936", 
+      ",", "2388680704", ",", "3314585600", ",", "1751705600", ",", 
+      "2627492864", ",", "4008611328", ",", "1431684352", ",", "2147543168", 
+      ",", "3221249216", ",", "1610649184", ",", "2415969680", ",", 
+      "3892340840", ",", "1543543964", ",", "2382425838", ",", "3305133397"}],
+      "}"}]}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ctz", "[", "i_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"c", "=", "0"}], ",", 
+       RowBox[{"n", "=", 
+        RowBox[{"BitOr", "[", 
+         RowBox[{"i", ",", 
+          RowBox[{"2", "^", "33"}]}], "]"}]}]}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"BitGet", "[", 
+          RowBox[{"n", ",", "c"}], "]"}], "\[Equal]", "0"}], ",", 
+        RowBox[{"c", "++"}]}], "]"}], ";", " ", "c"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"cto", "[", "i_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"c", "=", "0"}], ",", 
+       RowBox[{"n", "=", 
+        RowBox[{"BitAnd", "[", 
+         RowBox[{"i", ",", 
+          RowBox[{
+           RowBox[{"2", "^", "32"}], "-", "1"}]}], "]"}]}]}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"BitGet", "[", 
+          RowBox[{"n", ",", "c"}], "]"}], "\[Equal]", "1"}], ",", 
+        RowBox[{"c", "++"}]}], "]"}], ";", " ", "c"}]}], "]"}]}], 
+  ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6557024881694*^9, 3.6557024909463997`*^9}, {
+   3.6557028345434*^9, 3.6557029922054*^9}, {3.6557080360189*^9, 
+   3.6557081128419*^9}, {3.6557082159079*^9, 3.6557082718629*^9}, {
+   3.6557214503554*^9, 3.6557214720694*^9}, {3.6557216115924*^9, 
+   3.6557216157644*^9}, {3.6557216461384*^9, 3.6557217090704*^9}, {
+   3.6557217403143997`*^9, 3.6557217425014*^9}, 3.6557217945854*^9, {
+   3.6557218881184*^9, 3.6557219258504*^9}, {3.6557219644564*^9, 
+   3.6557219669194*^9}, {3.6557220071244*^9, 3.6557220487743998`*^9}, {
+   3.6557220973684*^9, 3.6557221035123997`*^9}, {3.6557221426443996`*^9, 
+   3.6557221746633997`*^9}, {3.6557239093384*^9, 3.6557239106633997`*^9}, {
+   3.6557244332074003`*^9, 3.6557244353484*^9}, {3.6557245339834003`*^9, 
+   3.6557245576094*^9}, {3.6557249552553997`*^9, 3.6557250260584*^9}, {
+   3.6557251788934*^9, 3.6557252024244003`*^9}, {3.6557252422214003`*^9, 
+   3.6557253161674*^9}, {3.6557310605554*^9, 3.6557310741034*^9}, {
+   3.6557349998174*^9, 3.6557350017424*^9}, {3.6557350326934*^9, 
+   3.6557350382784*^9}, {3.6557351116633997`*^9, 3.6557351133744*^9}, {
+   3.6557365133854*^9, 3.6557365312594*^9}, {3.6557919627169*^9, 
+   3.6557919727089*^9}, {3.6557920613289003`*^9, 3.6557920848979*^9}, {
+   3.6558058059249*^9, 3.6558058181219*^9}, 3.666211984029602*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Standard Sobol sequence
+
+sobel_2d_init(s, h0,h1);  sobel_2d_next_f32(s, ..);\
+\>", "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.6557218328034*^9, 3.6557218620824003`*^9}, {
+   3.6557919999989*^9, 3.6557920350859003`*^9}, 3.6662119940211554`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"buildPoints2D", "[", 
+    RowBox[{"h0_", ",", "h1_", ",", "len_"}], "]"}], ":=", " ", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"list", "=", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"pos", " ", "=", "0"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"d0", "=", "h0"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"d1", "=", "h1"}], ",", "\[IndentingNewLine]", "t"}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{"pos", "<", "len"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"list", ",", 
+           RowBox[{
+            RowBox[{"2", "^", 
+             RowBox[{"-", "24"}]}], "*", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"BitShiftRight", "[", 
+               RowBox[{"d0", ",", "8"}], "]"}], ",", 
+              RowBox[{"BitShiftRight", "[", 
+               RowBox[{"d1", ",", "8"}], "]"}]}], "}"}]}]}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"t", "=", 
+          RowBox[{"ctz", "[", 
+           RowBox[{"BitNot", "[", "pos", "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"d0", "=", 
+          RowBox[{"BitXor", "[", 
+           RowBox[{"d0", ",", 
+            RowBox[{"BitShiftRight", "[", 
+             RowBox[{"2147483648", ",", "t"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"d1", "=", 
+          RowBox[{"BitXor", "[", 
+           RowBox[{"d1", ",", 
+            RowBox[{"sobolTable2D", "[", 
+             RowBox[{"[", 
+              RowBox[{"t", "+", "1"}], "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"pos", "++"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+      "list"}]}], "]"}]}], ";"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.6557902371769*^9, 3.6557904343649*^9}, {
+   3.6557904677359*^9, 3.6557905930418997`*^9}, {3.6557906981329*^9, 
+   3.6557907381408997`*^9}, {3.6557912242639*^9, 3.6557912989869003`*^9}, 
+   3.6557913596809*^9, {3.6557915327859*^9, 3.6557915529769*^9}, {
+   3.6557920235239*^9, 3.6557920242089*^9}, {3.6557934599119*^9, 
+   3.6557934608209*^9}, 3.6662119940216713`*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Stratified Sobel 2D
+
+sobel_2d_fixed_init(s, h0); sobel_2d_fixed_next_f32(s, ..);\
+\>", "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6557218328034*^9, 3.6557218620824003`*^9}, {
+   3.6557915921709003`*^9, 3.6557916782499*^9}, 3.666211962852912*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"buildPoints2DS", "[", 
+    RowBox[{"h0_", ",", "len_"}], "]"}], ":=", " ", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"list", "=", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"pos", " ", "=", "0"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"d0", "=", "h0"}], ",", "\[IndentingNewLine]", "t"}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{"pos", "<", "len"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"list", ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"2", "^", 
+               RowBox[{"-", "24"}]}], "*", 
+              RowBox[{"BitShiftRight", "[", 
+               RowBox[{"d0", ",", "8"}], "]"}]}], ",", 
+             RowBox[{"pos", "/", "len"}]}], "}"}]}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"t", "=", 
+          RowBox[{"ctz", "[", 
+           RowBox[{"BitNot", "[", "pos", "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"d0", "=", 
+          RowBox[{"BitXor", "[", 
+           RowBox[{"d0", ",", 
+            RowBox[{"BitShiftRight", "[", 
+             RowBox[{"2147483648", ",", "t"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"pos", "++"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+      "list"}]}], "]"}]}], ";"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6557934359299*^9, 3.6557934413178997`*^9}, 
+   3.664503168802291*^9, 3.666211962853426*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"getPointSet2D", "[", 
+    RowBox[{"h0_", ",", "h1_", ",", "h2_", ",", "len_", ",", "method_"}], 
+    "]"}], " ", ":=", " ", "\[IndentingNewLine]", 
+   RowBox[{"Switch", "[", 
+    RowBox[{"method", ",", "\[IndentingNewLine]", "1", ",", 
+     RowBox[{"buildPoints2D", "[", 
+      RowBox[{
+       RowBox[{"IntegerPart", "[", "h0", "]"}], ",", 
+       RowBox[{"IntegerPart", "[", "h1", "]"}], ",", "len"}], "]"}], ",", 
+     "\[IndentingNewLine]", "2", ",", 
+     RowBox[{"buildPoints2DS", "[", 
+      RowBox[{
+       RowBox[{"IntegerPart", "[", "h0", "]"}], ",", "len"}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6557922143689003`*^9, 3.6557922851078997`*^9}, {
+   3.6557923749229*^9, 3.6557924038629*^9}, {3.6558106880909*^9, 
+   3.6558106890109*^9}, {3.6662118604840994`*^9, 3.6662118726527295`*^9}, 
+   3.666211962853426*^9}]
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", 
+    RowBox[{
+     RowBox[{"getPointSet2D", "[", 
+      RowBox[{"hash0", ",", "hash1", ",", "0", ",", "terms", ",", "method"}], 
+      "]"}], ",", " ", "\[IndentingNewLine]", 
+     RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+     RowBox[{"ImagePadding", "\[Rule]", "20"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1"}], "}"}]}], "}"}]}], ",", 
+     RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+     RowBox[{"Frame", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"FrameStyle", "\[Rule]", 
+      RowBox[{"Directive", "[", "Gray", "]"}]}], ",", 
+     RowBox[{"PlotRangeClipping", "\[Rule]", "False"}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"method", ",", "1", ",", "\"\<generation method\>\""}], "}"}], 
+     ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"1", "\[Rule]", "\"\<2D\>\""}], ",", 
+       RowBox[{"2", "\[Rule]", "\"\<Stratified\>\""}]}], " ", "}"}]}], "}"}], 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"hash0", ",", "0", ",", "\"\<hash 0\>\""}], "}"}], ",", "0", 
+     ",", "4294967295", ",", "256"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"hash1", ",", "0", ",", "\"\<hash 1\>\""}], "}"}], ",", "0", 
+     ",", "4294967295", ",", "256"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"terms", ",", "100", ",", "\"\<number of points\>\""}], "}"}], 
+     ",", "1", ",", "2000", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6557223474744*^9, 3.6557224473034*^9}, {
+   3.6557365877813997`*^9, 3.6557366358934*^9}, {3.6557380813574*^9, 
+   3.6557381441354*^9}, {3.6557415430889*^9, 3.6557416167829*^9}, {
+   3.6557894282448997`*^9, 3.6557894702489*^9}, {3.6557895017239*^9, 
+   3.6557895129379*^9}, {3.6557897353499002`*^9, 3.6557897446198997`*^9}, {
+   3.6557898791919003`*^9, 3.6557898843549*^9}, {3.6557899523949003`*^9, 
+   3.6557900188289003`*^9}, {3.6557913146969*^9, 3.6557913369839*^9}, {
+   3.6557914729199*^9, 3.6557914812118998`*^9}, {3.6557922001359*^9, 
+   3.6557922014459*^9}, {3.6557924435719*^9, 3.6557924578659*^9}, {
+   3.6558106935158997`*^9, 3.6558106943229*^9}, 3.6558107476729*^9}]
+}, Open  ]]
+},
+WindowSize->{964, 1087},
+WindowMargins->{{309, Automatic}, {9, Automatic}},
+FrontEndVersion->"10.4 for Microsoft Windows (64-bit) (February 25, 2016)",
+StyleDefinitions->FrontEnd`FileName[{"Report"}, "StandardReport.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 245, 3, 88, "Title"],
+Cell[827, 27, 291, 7, 68, "Text"],
+Cell[CellGroupData[{
+Cell[1143, 38, 235, 3, 30, "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[1381, 43, 4206, 90, 281, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[5624, 138, 293, 7, 65, "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[5920, 147, 2382, 57, 281, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[8339, 209, 295, 7, 65, "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[8637, 218, 1719, 44, 241, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[10359, 264, 969, 21, 121, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[11343, 288, 2526, 57, 158, "Input"]
+}, Open  ]]
+}
+]
+*)
+

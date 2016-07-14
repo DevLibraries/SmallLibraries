@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <BIN_DIR>..\bin\Windows$(PLATFORM_SUFFIX)-$(ARCH)$(CONF_SUFFIX)</BIN_DIR>
+    <LIB_DIR>..\lib\Windows$(PLATFORM_SUFFIX)-$(ARCH)-vs11$(CONF_SUFFIX)</LIB_DIR>
+    <BUILD_DIR>build\$(ProjectName)-win$(PLATFORM_SUFFIX)-$(ARCH)-vs11$(CONF_SUFFIX)</BUILD_DIR>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IntDir>$(BUILD_DIR)\</IntDir>
+    <OutDir>$(BIN_DIR)\</OutDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/w14545 /w34242 /w34254 /w34287 /w44263 /w44265 /w44296 /w44311 /w44355 /w44826 /wd4010 /wd4054 /wd4055 /wd4100 /wd4127 /wd4132 /wd4152 /wd4201 /wd4204 /wd4206 /wd4221 /wd4458 /wd4505 /wd4668 /wd4701 /wd4703 /wd4706 /wd4710 /wd4711 /wd4820 /we4002 /we4003 /we4013 /we4289 /we4546 /we4547 /we4548 /we4549 /we4555 /we4619 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalOptions>/time %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="BIN_DIR">
+      <Value>$(BIN_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LIB_DIR">
+      <Value>$(LIB_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BUILD_DIR">
+      <Value>$(BUILD_DIR)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+
+{
+    "options": {"failByDrop": false},
+    "outdir": "./reports/servers",
+
+    "servers": [
+        {
+            "agent": "AutobahnPython",
+            "url": "ws://127.0.0.1:35000/ws_echo/",
+            "options": {"version": 18}
+        }
+    ],
+
+    "cases": ["9.1.*","9.2.*"],
+    
+    "exclude-cases": [],
+    "exclude-agent-cases": {}
+}
